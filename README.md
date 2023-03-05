@@ -1,10 +1,10 @@
-# OpenAI ChatGPT Rust Cli
+# gptrs
 
 *WIP*
 
-This takes the [OpenAI API](https://platform.openai.com/) and uses it as a cli that can help generate code or make suggestions.
+This takes the [OpenAI API](https://platform.openai.com/) and uses it as a cli thats build in Rust to generate code or make suggestions.
 
-This is mainly a small project to help myself learn rust.
+This is mainly a small project to help myself learn Rust, some of the initial code was generated using the help of ChatGPT!
 
 ### Code Completion
 
