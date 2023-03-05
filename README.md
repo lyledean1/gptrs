@@ -52,5 +52,5 @@ cargo install --path=/path/to/repo
 
 Via github
 ```
-cargo install git https://github.com/lyledean1/gptrs
+cargo install --git https://github.com/lyledean1/gptrs
 ```
