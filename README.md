@@ -32,11 +32,15 @@ gtprs completion --prompt=<PROMPT>
 ### Configurable API
 
 Max Tokens: Depending on the model, this can vary from 1-2500, some models offer up to 8000 (codex)
+
+Default is 300
 ```
 --max_tokens=3000
 ```
 
 Temperature: Effects the randomness of the model, value from 0-1 as a decimal
+
+Default is 0.7
 ```
 --temperature=0.7
 ```
@@ -44,7 +48,7 @@ Temperature: Effects the randomness of the model, value from 0-1 as a decimal
 Model: Selection of models to use, 'code-davinci-002' is the default, currently can add "text-davinci-003", "code-davinci-002" or "code-cushman-001".
 
 See https://platform.openai.com/docs/models
-
+Default is "code-davinci-002"
 ```
 --model="code-davinci-002"
 ```
