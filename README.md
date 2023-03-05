@@ -1,6 +1,6 @@
 # gptrs
 
-*Note: This is still WIP and needs alot more work to make this useful, built this is a few hours as a small demonstration*
+*Note: This is still WIP and needs alot more work to make this useful, built this in a few hours as a small demonstration*
 
 This takes the [OpenAI API](https://platform.openai.com/) and uses it as a cli thats built in Rust to generate code or make suggestions.
 
