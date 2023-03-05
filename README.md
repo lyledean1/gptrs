@@ -13,7 +13,7 @@ This is mainly a small project to help myself learn Rust and get familiar with t
 Using a file (see examples in the example folder taken from the developer documentation), and also include a prompt. The prompt will be added to the top of the file to help direct chatgpt
 
 ```
-gtprs completion --file=<PATH/TO/FILE> --prompt=<PROMPT>
+gptrs completion --file=<PATH/TO/FILE> --prompt=<PROMPT>
 ```
 
 i.e in this example below, I loaded the file in /example/example.go and added a prompt for it to rewrite this code in Python
@@ -24,7 +24,7 @@ i.e in this example below, I loaded the file in /example/example.go and added a 
 ### Prompt Only Code Completion
 
 ```
-gtprs completion --prompt=<PROMPT>
+gptrs completion --prompt=<PROMPT>
 ```
 
 <img width="937" alt="Screenshot 2023-03-05 at 20 06 48" src="https://user-images.githubusercontent.com/20296911/222983863-05122116-43af-4146-8db3-0d348d395d9e.png">
