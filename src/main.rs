@@ -14,7 +14,7 @@ fn cli() -> Command {
         arg!(--prompt <PROMPT> "Prompt to enter in chatgptm if this is included with a file it will be added to the top of the file as a comment"),
         arg!(--file <FILE> "Include a file to get a response from chatgpt, a prompt also needs to be added (see --prompt) to give the API direction"),
         // todo, add these globally
-        arg!(--max-tokens <MAX_TOKENS> "Max tokens depends on model, see --model"),
+        arg!(--max_tokens <MAX_TOKENS> "Max tokens depends on model, see --model"),
         arg!(--temperature <TEMPERATURE> "Value from 0-1, Lower temperatures give more precise results."),
         arg!(--model <MODEL> "For code completion, use `code-davinci-002` (latest beta, up to 4000 tokens) or `code-cushman-001` (up to 2048 tokens) \n for gpt models use text-davinci-003	"),
     ]))

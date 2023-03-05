@@ -33,7 +33,7 @@ gtprs completion --prompt=<PROMPT>
 
 Max Tokens: Depending on the model, this can vary from 1-2500, some models offer up to 8000 (codex)
 ```
---max-tokens=3000
+--max_tokens=3000
 ```
 
 Temperature: Effects the randomness of the model, value from 0-1 as a decimal
