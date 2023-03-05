@@ -33,7 +33,13 @@ pub struct Usage {
     total_tokens: usize,
 }
 
-pub async fn send_request(prompt: &str, api_key: &str) -> ReqwestResult<String> {
+pub struct RequestBase {
+    pub model: String,
+    pub temperature: f32,
+    pub max_tokens: i32,
+}
+
+pub async fn send_request(prompt: &str, api_key: &str, request_defaults: RequestBase) -> ReqwestResult<String> {
     let client = Client::new();
 
     let mut request_builder = client.post("https://api.openai.com/v1/completions");
@@ -43,10 +49,10 @@ pub async fn send_request(prompt: &str, api_key: &str) -> ReqwestResult<String> 
 
 
     let json = json!({
-        "model": "text-davinci-002",
+        "model": request_defaults.model,
         "prompt": prompt,
-        "temperature": 0.7,
-        "max_tokens": 300
+        "temperature": request_defaults.temperature,
+        "max_tokens": request_defaults.max_tokens,
     });
 
     let response = request_builder

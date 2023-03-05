@@ -34,7 +34,6 @@ gtprs completion --file=<PATH/TO/FILE>
 
 This assumes you have an [OpenAI Developer Account](https://platform.openai.com/)
 
-
 ### Generate API Token 
 
 [See here for instructions](https://platform.openai.com/account/api-keys)
