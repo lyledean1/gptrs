@@ -1,5 +1,6 @@
 [package]
 name = "gptrs"
+description = "A cli built on top of OpenAI that can generate code and output to a file"
 version = "0.1.0"
 edition = "2021"
 
