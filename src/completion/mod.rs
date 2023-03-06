@@ -1,9 +1,9 @@
-use serde::{Serialize, Deserialize};
-use serde_json::json;
-
+use reqwest::header::{AUTHORIZATION, CONTENT_TYPE};
 use reqwest::Client;
-use reqwest::header::{CONTENT_TYPE, AUTHORIZATION};
 use reqwest::Result as ReqwestResult;
+use serde::{Deserialize, Serialize};
+use serde_json::json;
+use std::env;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct CodeCompletion {
@@ -37,30 +37,33 @@ pub struct RequestBase {
     pub model: String,
     pub temperature: f32,
     pub max_tokens: i32,
+    pub prompt: String,
 }
 
-pub async fn send_request(prompt: &str, api_key: &str, request_defaults: RequestBase) -> ReqwestResult<String> {
+pub async fn send_request(request_base: RequestBase) -> ReqwestResult<String> {
     let client = Client::new();
+    let api_key = env::var("OPENAI_API_KEY");
+    match api_key.clone() {
+        Ok(api_key) => {
+            let mut request_builder = client.post("https://api.openai.com/v1/completions");
+            let auth_header = format!("Bearer {}", api_key);
+            request_builder = request_builder.header(AUTHORIZATION, auth_header);
+            request_builder = request_builder.header(CONTENT_TYPE, "application/json");
 
-    let mut request_builder = client.post("https://api.openai.com/v1/completions");
-    let auth_header = format!("Bearer {}", api_key);
-    request_builder = request_builder.header(AUTHORIZATION, auth_header);
-    request_builder = request_builder.header(CONTENT_TYPE, "application/json");
+            let json = json!({
+                "model": request_base.model,
+                "prompt": request_base.prompt,
+                "temperature": request_base.temperature,
+                "max_tokens": request_base.max_tokens,
+            });
 
+            let response = request_builder.json(&json).send().await?.text().await?;
 
-    let json = json!({
-        "model": request_defaults.model,
-        "prompt": prompt,
-        "temperature": request_defaults.temperature,
-        "max_tokens": request_defaults.max_tokens,
-    });
-
-    let response = request_builder
-        .json(&json)
-        .send()
-        .await?
-        .text()
-        .await?;
-
-    Ok(response)
+            return Ok(response);
+        }
+        Err(_) => {
+            eprintln!("Error: OPENAI_API_KEY environment variable is not set, please set it before continuing");
+            std::process::exit(1);
+        }
+    }
 }
