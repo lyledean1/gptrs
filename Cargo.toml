@@ -1,7 +1,7 @@
 [package]
 name = "gptrs"
 description = "A cli built on top of OpenAI that can generate code and output to a file"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 readme = "./README.md"
 keywords = ["openai", "cli", "chatgpt", "code", "generation"]
