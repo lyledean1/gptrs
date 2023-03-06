@@ -6,6 +6,7 @@ edition = "2021"
 readme = "./README.md"
 keywords = ["openai", "cli", "chatgpt", "code", "generation"]
 license = "Apache-2.0/MIT"
+repository = "https://github.com/lyledean1/openai-gptrs"
 
 [dependencies]
 clap = {version = "4.1.8", features = ["derive"]}
