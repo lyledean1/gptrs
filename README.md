@@ -1,6 +1,8 @@
-# gptrs a OpenAI Code Generation cli
+# gptrs 
 
-This takes the [OpenAI API](https://platform.openai.com/) and uses it as a cli to generate code into a file.
+A OpenAI Code generation cli. 
+
+This sends requests to the [OpenAI API](https://platform.openai.com/), parsers the output and then generates code into a file.
 
 This is mainly a small project to help myself learn Rust and get familiar with the OpenAI API, some of the initial code was generated using the help of ChatGPT!
 
