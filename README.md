@@ -14,19 +14,28 @@ gptrs completion --prompt=<PROMPT> --file=<PATH/TO/FILE> --output=</PATH/TO/OUTP
 
 ### Example
 
-I ran the command to generate a Python file with a fibonacci sequence as following
+Run the command to generate a Python file with a Fibonacci sequence as following
 
 ```
 gptrs completion --prompt="generate a fibonacci sequence in Python" --output=./fibonacci.py
 ```
 
-Which generated this file in Python:
+Which generates a file in Python:
 
 <img width="343" alt="Screenshot 2023-03-06 at 21 45 50" src="https://user-images.githubusercontent.com/20296911/223241097-69448416-5457-4a77-9403-1c6ca4d70840.png">
 
-I then ran a command to refactor the code in this file and output a new file below:
+Then run a command to refactor the code in this file and output a new file below:
+
+```
+gptrs completion --prompt="Refactor this code" --file=./fibonacci.py --output=./fibonacci_refactor.py 
+```
 
 <img width="332" alt="Screenshot 2023-03-06 at 21 46 02" src="https://user-images.githubusercontent.com/20296911/223241154-b21f7e08-a103-4148-9479-7ffa8933e257.png">
+
+You can also set different models and temperatures 
+```
+gptrs completion --prompt="Write unit tests for this fibonacci function in Python" --file=./fibonacci_refactor.py --output=./fibonacci_tests.py --model=code-davinci-002 --temperature=0
+```
 
 # Setup
 
