@@ -136,13 +136,15 @@ impl Defaults for RequestDefaults {
     }
 
     fn get_temperature(&self) -> f32 {
-        let default = &f32::from(0.7);
+        let mut temperature = f32::from(0.7);
         let temperature_arg = self
             .matches
-            .get_one::<f32>("temperature")
-            .map(|s| s)
-            .unwrap_or(default);
-        temperature_arg.clone()
+            .get_one::<String>("temperature")
+            .map(|s| s.parse::<f32>());
+        if let Some(temperature_arg) = temperature_arg {
+            temperature = temperature_arg.unwrap();
+        }
+        temperature
     }
 
     fn get_max_tokens(&self) -> i32 {
