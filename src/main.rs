@@ -87,7 +87,7 @@ impl Defaults for RequestDefaults {
     fn get_file_path(&self) -> String {
         let file = self
             .matches
-            .get_one::<String>("file")
+            .get_one::<String>("input")
             .map(|s| s.as_str())
             .unwrap_or("");
         file.to_string()
@@ -175,7 +175,7 @@ fn cli() -> Command {
     .subcommand( Command::new("completion")
     .args([
         arg!(--prompt <PROMPT> "Prompt to enter in chatgptm if this is included with a file it will be added to the top of the file as a comment"),
-        arg!(--file <FILE> "Include a file to get a response from chatgpt, a prompt also needs to be added (see --prompt) to give the API direction"),
+        arg!(--input <INPUT> "Include a file to get a response from chatgpt, a prompt also needs to be added (see --prompt) to give the API direction"),
         arg!(--output <OUTPUT> "Output file destination"),
         arg!(--max_tokens <MAX_TOKENS> "Max tokens depends on model, see --model"),
         arg!(--temperature <TEMPERATURE> "Value from 0-1, Lower temperatures give more precise results."),

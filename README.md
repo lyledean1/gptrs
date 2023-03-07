@@ -9,7 +9,7 @@ This is mainly a small project to help myself learn Rust and get familiar with t
 ## Code Completion with A File and Prompt
 
 ```
-gptrs completion --prompt=<PROMPT> --file=<PATH/TO/FILE> --output=</PATH/TO/OUTPUT>
+gptrs completion --prompt=<PROMPT> --input=<PATH/TO/FILE> --output=</PATH/TO/OUTPUT>
 ```
 
 ### Example
@@ -27,14 +27,14 @@ Which generates a file in Python:
 Then run a command to refactor the code in this file and output a new file below:
 
 ```
-gptrs completion --prompt="Refactor this code" --file=./fibonacci.py --output=./fibonacci_refactor.py 
+gptrs completion --prompt="Refactor this code" --input=./fibonacci.py --output=./fibonacci_refactor.py 
 ```
 
 <img width="332" alt="Screenshot 2023-03-06 at 21 46 02" src="https://user-images.githubusercontent.com/20296911/223241154-b21f7e08-a103-4148-9479-7ffa8933e257.png">
 
 You can also set different models and temperatures 
 ```
-gptrs completion --prompt="Write unit tests for this fibonacci function in Python" --file=./fibonacci_refactor.py --output=./fibonacci_tests.py --model=code-davinci-002 --temperature=0
+gptrs completion --prompt="Write unit tests for this fibonacci function in Python" --input=./fibonacci_refactor.py --output=./fibonacci_tests.py --model=code-davinci-002 --temperature=0
 ```
 
 # Setup
