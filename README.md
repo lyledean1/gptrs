@@ -49,5 +49,5 @@ export OPENAI_API_KEY={API_KEY}
 
 ## Install via Cargo 
 ```
-cargo install gptrs
+cargo install gptshell
 ```
