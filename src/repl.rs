@@ -16,7 +16,11 @@ use text_colorizer::*;
 //TODO: make this into an enum and loop through
 fn print_quickstart() {
     println!("{}", "Quickstart:".bold());
-    println!("{}{}", "\"help()\"".italic(), " for information on commands");
+    println!(
+        "{}{}",
+        "\"help()\"".italic(),
+        " for information on commands"
+    );
     println!("{}{}", "\"print()\"".italic(), " to print current query");
     println!(
         "{}{}",
@@ -101,6 +105,7 @@ fn print_help() {
         "\"temperature(0.5)\"".cyan(),
         " to set temperature, default is 0.7, allowed values are 0 to 1"
     );
+    println!("");
 }
 
 fn print_all_models() {
@@ -172,7 +177,7 @@ fn parse_file(captures: Captures, print: bool) -> String {
             for (index, line) in lines.lines().enumerate() {
                 if args.len() > 1 {
                     let start = args[1].trim().parse::<usize>().unwrap();
-                    if index < (start - 1)  {
+                    if index < (start - 1) {
                         continue;
                     }
                 }
