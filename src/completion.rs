@@ -4,7 +4,6 @@ use crate::output::Output;
 use serde::{Deserialize, Serialize};
 use serde_json::from_str;
 use serde_json::Result as SerdeResult;
-use text_colorizer::*;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct CodeCompletionCreateParams {

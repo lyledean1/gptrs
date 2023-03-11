@@ -40,7 +40,7 @@ pub async fn send_chat_request(request_base: ChatCreateCompletionParams) -> Reqw
     let api_key = env::var("OPENAI_API_KEY");
     match api_key.clone() {
         Ok(api_key) => {
-            let mut request_builder = client.post("https://api.openai.com/v1/completions");
+            let mut request_builder = client.post("https://api.openai.com/v1/chat/completions");
             let auth_header = format!("Bearer {}", api_key);
             request_builder = request_builder.header(AUTHORIZATION, auth_header);
             request_builder = request_builder.header(CONTENT_TYPE, "application/json");

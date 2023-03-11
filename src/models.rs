@@ -1,3 +1,5 @@
+#[allow(dead_code)]
+
 pub enum Models {
     TextDavinci003,
     CodeDavinci002,
@@ -16,6 +18,7 @@ impl Models {
         }
     }
 
+    #[allow(dead_code)]
     pub fn description(&self) -> &str {
         match *self {
             Models::Gpt35Turbo => "Most capable GPT-3.5 model and optimized for chat at 1/10th the cost of text-davinci-003. Will be updated with our latest model iteration.",
@@ -25,6 +28,7 @@ impl Models {
         }
     }
 
+    #[allow(dead_code)]
     pub fn max_tokens(&self) -> i32 {
         match *self {
             Models::Gpt35Turbo => 4096,
@@ -33,7 +37,8 @@ impl Models {
             Models::CodeCushman001 => 4093,
         }
     }
-
+    
+    #[allow(dead_code)]
     pub fn training_data(&self) -> &str {
         match *self {
             Models::Gpt35Turbo => "Up to Sep 2021",

@@ -4,7 +4,41 @@ use crate::output::Output;
 use serde::{Deserialize, Serialize};
 use serde_json::from_str;
 use serde_json::Result as SerdeResult;
-use text_colorizer::*;
+
+#[derive(Debug, Clone)]
+pub struct GptChat {
+    messages: Vec<Message>,
+}
+
+pub trait History {
+    fn new() -> GptChat;
+    fn add(&mut self, message: Message);
+    fn pop(&mut self);
+    fn get_all(&self) -> Vec<Message>;
+    fn flush(&mut self);
+}
+
+impl History for GptChat {
+    fn new() -> GptChat {
+        GptChat { messages: vec![] }
+    }
+
+    fn add(&mut self, message: Message) {
+        self.messages.push(message);
+    }
+
+    fn pop(&mut self) {
+        self.messages.pop();
+    }
+
+    fn get_all(&self) -> Vec<Message> {
+        self.messages.clone()
+    }
+
+    fn flush(&mut self) {
+        self.messages = vec![];
+    }
+}
 
 // Based off create chat completion
 // See API reference here https://platform.openai.com/docs/api-reference/chat/create
@@ -75,6 +109,28 @@ impl Output for ChatCreateCompletionResponse {
             }
         }
         output
+    }
+}
+
+pub trait MessageHistory {
+    fn save_messages(&self, history: &mut GptChat);
+}
+
+impl MessageHistory for ChatCreateCompletionResponse {
+    fn save_messages(&self, history: &mut GptChat) {
+        for choice in self.choices.iter() {
+            for message in choice.iter() {
+                let lines = &message.message;
+                let some_lines = lines;
+                match some_lines {
+                    Some(some_lines) => history.add(Message {
+                        role: some_lines.role.clone(),
+                        content: some_lines.content.clone(),
+                    }),
+                    None => {}
+                }
+            }
+        }
     }
 }
 
