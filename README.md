@@ -13,6 +13,7 @@ Download and run `gptshell` in your terminal.
 Quickly build up powerful queries by loading files of code, specifying specific lines of code and exporting chat sessions for future use. Essentially reducing the feedback loop time with ChatGPT vs using a web browser where you have to navigate between different files, IDEs and copy & paste. 
 
 ## Demo
+<img src="https://user-images.githubusercontent.com/20296911/224504826-7ab2c4ed-75fd-4f56-b1b6-482ec44f0606.gif" width=500 height=281>
 
 ## Commands
 
