@@ -37,7 +37,7 @@ impl Models {
             Models::CodeCushman001 => 4093,
         }
     }
-    
+
     #[allow(dead_code)]
     pub fn training_data(&self) -> &str {
         match *self {

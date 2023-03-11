@@ -1,18 +1,15 @@
 use crate::chat;
+use crate::chat::History;
 use crate::chat::MessageHistory;
 use crate::completion;
 use crate::models;
 use crate::output::Output;
 use regex::{Captures, Regex};
-use std::process::Command;
-use std::env;
-use std::io::{stdin, stdout, Write};
-use text_colorizer::*;
-use crate::chat::History;
 use rustyline::error::ReadlineError;
-use rustyline::{Config, EditMode, DefaultEditor};
-use std::fs::File;
-use std::io::{BufRead, BufReader};
+use rustyline::{DefaultEditor};
+use std::env;
+use std::process::Command;
+use text_colorizer::*;
 
 fn string_to_vec(s: &str) -> Vec<String> {
     vec![String::from(s)]
@@ -20,7 +17,7 @@ fn string_to_vec(s: &str) -> Vec<String> {
 
 fn get_max_tokens(captures: Captures) -> i32 {
     let args: Vec<&str> = captures[1].split(",").collect();
-     args[0].parse::<i32>().unwrap()
+    args[0].parse::<i32>().unwrap()
 }
 
 fn parse_terminal_command(captures: Captures) -> String {
@@ -28,13 +25,17 @@ fn parse_terminal_command(captures: Captures) -> String {
 
     let folder = env::current_dir().unwrap(); // get the current directory as a Path object
 
-    println!("Executing command {:?} in dir {:?}", captures[1].to_string(), folder.to_str());
+    println!(
+        "Executing command {:?} in dir {:?}",
+        captures[1].to_string(),
+        folder.to_str()
+    );
 
     let child = Command::new(command_parts[0])
-                     .args(&command_parts[1..])
-                     .current_dir(folder) // specify the current directory as the working directory
-                     .spawn()
-                     .expect("failed to execute process");
+        .args(&command_parts[1..])
+        .current_dir(folder) // specify the current directory as the working directory
+        .spawn()
+        .expect("failed to execute process");
 
     let output = child.wait_with_output().unwrap();
 
@@ -96,7 +97,6 @@ fn generate_message_from_prompt(prompt: &str) -> chat::Message {
 pub async fn run_repl() {
     let mut history = String::new();
     let mut chat_history = chat::GptChat::new();
-    let mut input = String::new();
     let mut max_tokens = 300;
     let version: &str = env!("CARGO_PKG_VERSION");
 
@@ -119,120 +119,129 @@ pub async fn run_repl() {
         }
     }
 
-    //TODO: use rustylines
-    // let config = Config::builder()
-    //     .edit_mode(EditMode::Emacs)
-    //     .history_ignore_space(true)
-    //     .completion_type(rustyline::CompletionType::List)
-    //     .build();
-    // let mut rl = Editor::<()>::with_config(config);
-    // if let Ok(history_file) = File::open("history.txt") {
-    //     if let Ok(lines) = BufReader::new(history_file).lines() {
-    //         for line in lines {
-    //             if let Ok(command) = line {
-    //                 rl.add_history_entry(command);
-    //             }
-    //         }
-    //     }
-    // }
-
     let mut rl = DefaultEditor::new().unwrap();
-
+    if rl.load_history("history.txt").is_err() {
+        println!("No previous history.");
+    }
     loop {
         let readline = rl.readline(">> ");
-        stdout().flush().expect("Error flushing stdout");
-        stdin().read_line(&mut input).expect("Error reading input");
-        match input.trim() {
-            "exit()" => break,
-            "help()" => {
-                println!("{}", "shell(command) to run a command in the shell and include the output to gpt");
-                println!("{}", "file(./path/to/file,line,line) to load a file into the query");
-                println!("{}", "cat(./path/to/file,line,line) to print the contents of a file");
-            }
-            "print_chat()" => {
-                println!("Current chat history: ");
-                for message in chat_history.get_all() {
-                    let role = message.role.unwrap();
-                    println!("User: {:?}", role);
-                    if role == "user" {
-                        println!("Message: {}", message.content.unwrap().blue());    
-                    } else {
-                        println!("Message: {}", message.content.unwrap().green());    
-                    }
+        match readline {
+            Ok(input) => {
+                let history_err = rl.add_history_entry(input.as_str());
+                match history_err {
+                    //TODO: decide how to handle 
+                    _ => {}
                 }
-            }
-            "clear_chat()" => {
-                println!("Clearing chat history: ");
-                chat_history.flush();
-            }
-            "chat()" => {
-                chat_history.add(generate_message_from_prompt(&history));
+                match input.trim() {
+                    "exit()" => break,
+                    "help()" => {
+                        println!("{}", "shell(command) to run a command in the shell and include the output to gpt");
+                        println!(
+                            "{}",
+                            "file(./path/to/file,line,line) to load a file into the query"
+                        );
+                        println!(
+                            "{}",
+                            "cat(./path/to/file,line,line) to print the contents of a file"
+                        );
+                    }
+                    "print_chat()" => {
+                        println!("Current chat history: ");
+                        for message in chat_history.get_all() {
+                            let role = message.role.unwrap();
+                            println!("User: {:?}", role);
+                            if role == "user" {
+                                println!("Message: {}", message.content.unwrap().blue());
+                            } else {
+                                println!("Message: {}", message.content.unwrap().green());
+                            }
+                        }
+                    }
+                    "clear_chat()" => {
+                        println!("Clearing chat history: ");
+                        chat_history.flush();
+                    }
+                    "chat()" => {
+                        chat_history.add(generate_message_from_prompt(&history));
 
-                let request = chat::ChatCreateCompletionParams {
-                    max_tokens: Some(max_tokens),
-                    model: Some(models::Models::Gpt35Turbo.name().to_string()),
-                    messages: Some(chat_history.get_all()),
-                    temperature: Some(0.7),
-                };
-                let output = chat::process_chat_prompt(request).await;
-                match output {
-                    Ok(output) => {
-                        output.save_messages(&mut chat_history);
-                        output.to_cli()
-                    },
-                    Err(e) => {
-                        eprintln!("{}: {:?}", "Error".red(), e)
+                        let request = chat::ChatCreateCompletionParams {
+                            max_tokens: Some(max_tokens),
+                            model: Some(models::Models::Gpt35Turbo.name().to_string()),
+                            messages: Some(chat_history.get_all()),
+                            temperature: Some(0.7),
+                        };
+                        let output = chat::process_chat_prompt(request).await;
+                        match output {
+                            Ok(output) => {
+                                output.save_messages(&mut chat_history);
+                                output.to_cli()
+                            }
+                            Err(e) => {
+                                eprintln!("{}: {:?}", "Error".red(), e)
+                            }
+                        }
+                        history = String::from("");
+                    }
+                    "complete()" => {
+                        let request = completion::CodeCompletionCreateParams {
+                            max_tokens: max_tokens,
+                            model: models::Models::TextDavinci003.name().to_string(),
+                            prompt: string_to_vec(&history),
+                            temperature: 0.7,
+                        };
+                        let output = completion::process_completion_prompt(request).await;
+                        match output {
+                            Ok(output) => output.to_cli(),
+                            Err(e) => {
+                                eprintln!("{}: {:?}", "Error".red(), e)
+                            }
+                        }
+                        history = String::from("");
+                    }
+                    "clear()" => {
+                        history = String::from("");
+                    }
+                    "print()" => {
+                        println!("{}", history);
+                    }
+                    "ls()" => {
+                        //TODO: List Current Dir
+                    }
+                    "models()" => {
+                        //TODO: List Models, with Descriptions
+                    }
+                    _ => {
+                        // Parse Regex
+                        if let Some(captures) = re_cat_function.captures(&input) {
+                            parse_file(captures, true);
+                        } else if let Some(captures) = re_file_function.captures(&input) {
+                            let contents_to_use = parse_file(captures, false);
+                            history.push_str(&contents_to_use);
+                        } else if let Some(captures) = re_shell_function.captures(&input) {
+                            parse_terminal_command(captures);
+                        } else if let Some(captures) = re_save_chat_function.captures(&input) {
+                            println!("TODO: save chat to output file: command: {:?}", captures);
+                        } else if let Some(captures) = re_max_tokens_function.captures(&input) {
+                            max_tokens = get_max_tokens(captures);
+                            println!("Setting max tokens to {:?}", max_tokens);
+                        } else {
+                            history.push_str(&input);
+                        }
                     }
                 }
-                history = String::from("");
-            }
-            "complete()" => {
-                let request = completion::CodeCompletionCreateParams {
-                    max_tokens: max_tokens,
-                    model: models::Models::TextDavinci003.name().to_string(),
-                    prompt: string_to_vec(&history),
-                    temperature: 0.7,
-                };
-                let output = completion::process_completion_prompt(request).await;
-                match output {
-                    Ok(output) => output.to_cli(),
-                    Err(e) => {
-                        eprintln!("{}: {:?}", "Error".red(), e)
-                    }
-                }
-                history = String::from("");
             },
-            "clear()" => {
-                history = String::from("");
-            }
-            "print()" => {
-                println!("{}", history);
-            }
-            "ls()" => {
-                //TODO: List Current Dir
-            }
-            "models()" => {
-                //TODO: List Models, with Descriptions
-            }
-            _ => {
-                // Parse Regex
-                if let Some(captures) = re_cat_function.captures(&input) {
-                    parse_file(captures, true);
-                } else if let Some(captures) = re_file_function.captures(&input) {
-                    let contents_to_use = parse_file(captures, false);
-                    history.push_str(&contents_to_use);
-                } else if let Some(captures) = re_shell_function.captures(&input) {
-                    parse_terminal_command(captures);
-                } else if let Some(captures) = re_save_chat_function.captures(&input) {
-                    println!("TODO: save chat to output file: command: {:?}", captures);
-                } else if let Some(captures) = re_max_tokens_function.captures(&input) {
-                    max_tokens = get_max_tokens(captures);
-                    println!("Setting max tokens to {:?}", max_tokens);
-                } else {
-                    history.push_str(&input);
-                }
+            Err(ReadlineError::Interrupted) => {
+                println!("CTRL-C");
+                break
+            },
+            Err(ReadlineError::Eof) => {
+                println!("CTRL-D");
+                break
+            },
+            Err(err) => {
+                println!("Error: {:?}", err);
+                break
             }
         }
-        input.clear();
     }
 }
