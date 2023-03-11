@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::from_str;
 use serde_json::Result as SerdeResult;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct GptChat {
     messages: Vec<Message>,
 }
@@ -48,6 +48,7 @@ pub struct ChatCreateCompletionParams {
     pub messages: Option<Vec<Message>>,
     pub temperature: Option<f64>,
     pub max_tokens: Option<i32>,
+    //TODO: readd
     // stop: Option<Vec<String>>,
     // stream: Option<bool>,
     // n: Option<i32>,

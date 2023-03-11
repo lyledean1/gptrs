@@ -109,7 +109,7 @@ impl Defaults for RequestDefaults {
 }
 
 pub fn cli() -> Command {
-    Command::new("gptrs")
+    Command::new("gptshell")
     .subcommand( Command::new("completion")
     .args([
         arg!(--prompt <PROMPT> "Prompt to enter in chatgptm if this is included with a file it will be added to the top of the file as a comment"),

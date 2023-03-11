@@ -7,14 +7,31 @@ pub enum Models {
     Gpt35Turbo,
 }
 
+pub fn get_model(name: &str) -> Models {
+    match name {
+        "text-davinci-003" => Models::TextDavinci003,
+        "code-davinci-002" => Models::CodeDavinci002,
+        "code-cushman-001" => Models::CodeCushman001,
+        _ => Models::Gpt35Turbo,
+    }
+}
 //TODO: update
 impl Models {
+    pub fn all() -> Vec<Models> {
+        vec![
+            Models::Gpt35Turbo,
+            Models::TextDavinci003,
+            Models::CodeDavinci002,
+            Models::CodeCushman001,
+        ]
+    }
+
     pub fn name(&self) -> &str {
         match *self {
             Models::Gpt35Turbo => "gpt-3.5-turbo",
             Models::TextDavinci003 => "text-davinci-003",
             Models::CodeDavinci002 => "code-davinci-002",
-            Models::CodeCushman001 => "code-cushman-003",
+            Models::CodeCushman001 => "code-cushman-001",
         }
     }
 
