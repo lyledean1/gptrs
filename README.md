@@ -6,6 +6,8 @@ GPTshell is an early prototype of a tool for developers to query and interact wi
 
 The tool was used during the development of this shell with ChatGPT and OpenAI! Any feedback is welcome as its still an early prototype. 
 
+Download and run `gptshell` in your terminal.
+
 ## Why use GPTshell?
 
 Quickly build up powerful queries by loading files of code, specifying specific lines of code and exporting chat sessions for future use. Essentially reducing the feedback loop time with ChatGPT vs using a web browser where you have to navigate between different files, IDEs and copy & paste. 
