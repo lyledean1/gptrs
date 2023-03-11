@@ -145,7 +145,7 @@ fn check_temperature_input(captures: Captures) -> f64 {
     temperature
 }
 
-fn save_chat_to_ouput(captures: Captures, chat_history: Vec<Message>) {
+fn export_chat_to_ouput(captures: Captures, chat_history: Vec<Message>) {
     let args: Vec<&str> = captures[1].split(",").collect();
     let file_path = args[0].trim_matches('"').parse::<String>().unwrap();
     let json = serde_json::to_string(&chat_history);
@@ -172,13 +172,13 @@ fn parse_file(captures: Captures, print: bool) -> String {
             for (index, line) in lines.lines().enumerate() {
                 if args.len() > 1 {
                     let start = args[1].trim().parse::<usize>().unwrap();
-                    if index < start {
+                    if index < (start - 1)  {
                         continue;
                     }
                 }
                 if args.len() > 2 {
                     let end = args[2].trim().parse::<usize>().unwrap();
-                    if index > end {
+                    if index > (end - 1) {
                         continue;
                     }
                 }
@@ -223,7 +223,7 @@ pub async fn run_repl() {
     let re_file_function = Regex::new(r"^file\(([^)]+)\)").unwrap();
     let re_set_model_function = Regex::new(r"^model\(([^)]+)\)").unwrap();
     let re_set_temperature_function = Regex::new(r"^temperature\(([^)]+)\)").unwrap();
-    let re_save_chat_function = Regex::new(r"^save\(([^)]+)\)").unwrap();
+    let re_export_chat_function = Regex::new(r"^export\(([^)]+)\)").unwrap();
 
     println!("{} version: {}", "gptshell".bold(), version.italic());
     println!("");
@@ -327,8 +327,8 @@ pub async fn run_repl() {
                         } else if let Some(captures) = re_file_function.captures(&input) {
                             let contents_to_use = parse_file(captures, false);
                             history.push_str(&contents_to_use);
-                        } else if let Some(captures) = re_save_chat_function.captures(&input) {
-                            save_chat_to_ouput(captures, chat_history.get_all());
+                        } else if let Some(captures) = re_export_chat_function.captures(&input) {
+                            export_chat_to_ouput(captures, chat_history.get_all());
                         } else if let Some(captures) = re_max_tokens_function.captures(&input) {
                             max_tokens = get_max_tokens(captures);
                             println!("Setting max tokens to {:?}", max_tokens);

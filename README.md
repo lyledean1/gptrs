@@ -6,17 +6,17 @@ GPTshell is an early prototype of a tool for developers to query and interact wi
 
 The tool was used during the development of this shell with ChatGPT and OpenAI! Any feedback is welcome as its still an early prototype. 
 
+## Why use GPTshell?
+
+Quickly build up powerful queries by loading files of code, specifying specific lines of code and exporting chat sessions for future use. Essentially reducing the feedback loop time with ChatGPT vs using a web browser where you have to navigate between different files, IDEs and copy & paste. 
+
 ## Demo
 
-## Features
+## Commands
 
-- Command-line tool
-- Supports completion for ease of use
-- Handles errors and error messages
-- Includes data models for organizing information 
-- Provides output formatting for a better user experience
-- Contains a Read-Eval-Print-Loop (REPL) functionality
-- Designed to increase productivity and simplify the process of natural language processing for developers
+Run `help()` in the GPTshell for a list of these commands.
+
+<img src="./assets/commands.png" alt="commands">
 
 ## Supported APIs
 
