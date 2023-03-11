@@ -1,16 +1,18 @@
 [package]
-name = "gptrs"
-description = "A cli built on top of OpenAI that can generate code and output to a file"
-version = "0.1.2"
+name = "gptshell"
+description = "GPTshell is a tool for developers to query and interact with ChatGPT's language capabilities. GPTshell's aim is to simplify the process of using natural language processing while developing."
+version = "0.1.0"
 edition = "2021"
 readme = "./README.md"
-keywords = ["openai", "cli", "chatgpt", "code", "generation"]
+keywords = ["openai", "cli", "chatgpt", "code", "generation", "shell", "developer", "experience", "devex"]
 license = "Apache-2.0/MIT"
-repository = "https://github.com/lyledean1/openai-gptrs"
+repository = "https://github.com/lyledean1/gptshell"
 
 [dependencies]
 clap = {version = "4.1.8", features = ["derive"]}
+regex = "1.7.1"
 reqwest = {version = "0.11.14", features = ["blocking", "json"]}
+rustyline = "11.0.0"
 serde = {version = "1.0.130", features = ["derive"]}
 serde_json = "1.0.67"
 text-colorizer = "1.0.0"

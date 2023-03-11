@@ -1,47 +1,43 @@
-# gptrs 
+# GPTshell 
 
-A OpenAI Code generation cli. 
+<img src="./assets/gptshell.png" alt="GPTshell" width="200" height="150">
 
-This sends requests to the [OpenAI API](https://platform.openai.com/), parsers the output and then generates code into a file.
+GPTshell is an early prototype of a tool for developers to query and interact with ChatGPT's language capabilities. GPTshell's aim is to simplify the process of using natural language processing and increase productivity while developing.
 
-This is mainly a small project to help myself learn Rust and get familiar with the OpenAI API, some of the initial code was generated using the help of ChatGPT!
+The tool was used during the development of this shell with ChatGPT and OpenAI! Any feedback is welcome as its still an early prototype. 
 
-## Code Completion with A File and Prompt
+Download and run `gptshell` in your terminal.
 
-```
-gptrs completion --prompt=<PROMPT> --input=<PATH/TO/FILE> --output=</PATH/TO/OUTPUT>
-```
+## Why use GPTshell?
 
-### Example
+Quickly build up powerful queries by loading files of code, specifying specific lines of code and exporting chat sessions for future use. Essentially reducing the feedback loop time with ChatGPT vs using a web browser where you have to navigate between different files, IDEs and copy & paste. 
 
-Run the command to generate a Python file with a Fibonacci sequence as following
+## Demo
 
-```
-gptrs completion --prompt="generate a fibonacci sequence in Python" --output=./fibonacci.py
-```
+## Commands
 
-Which generates a file in Python:
+Run `help()` in the GPTshell for a list of these commands.
 
-<img width="343" alt="Screenshot 2023-03-06 at 21 45 50" src="https://user-images.githubusercontent.com/20296911/223241097-69448416-5457-4a77-9403-1c6ca4d70840.png">
+<img src="./assets/commands.png" alt="commands">
 
-Then run a command to refactor the code in this file and output a new file below:
+## Supported APIs
+
+Note: Initial focus has been on the shell interactivity so currently only supports chat and completions. 
 
 ```
-gptrs completion --prompt="Refactor this code" --input=./fibonacci.py --output=./fibonacci_refactor.py 
-```
-
-<img width="332" alt="Screenshot 2023-03-06 at 21 46 02" src="https://user-images.githubusercontent.com/20296911/223241154-b21f7e08-a103-4148-9479-7ffa8933e257.png">
-
-You can also set different models and temperatures 
-```
-gptrs completion --prompt="Write unit tests for this fibonacci function in Python" --input=./fibonacci_refactor.py --output=./fibonacci_tests.py --model=code-davinci-002 --temperature=0
+✅ completions
+✅ chat
+🚧 edits
+🚧 images
+🚧 moderations
+🚧 audio
 ```
 
 # Setup
 
 This assumes you have an [OpenAI Developer Account](https://platform.openai.com/)
 
-### Generate API Token 
+## Generate API Token 
 
 [See here for instructions](https://platform.openai.com/account/api-keys)
 
@@ -50,7 +46,7 @@ After generating the token, set the env variable
 export OPENAI_API_KEY={API_KEY}
 ```
 
-### Install via Cargo 
+## Install via Cargo 
 ```
 cargo install gptrs
 ```
