@@ -4,7 +4,7 @@ description = "GPTshell is a tool for developers to query and interact with Chat
 version = "0.1.0"
 edition = "2021"
 readme = "./README.md"
-keywords = ["openai", "cli", "chatgpt", "code", "generation", "shell", "developer", "experience", "devex"]
+keywords = ["openai", "chatgpt", "shell", "ai", "devex"]
 license = "Apache-2.0/MIT"
 repository = "https://github.com/lyledean1/gptshell"
 
