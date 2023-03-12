@@ -10,7 +10,7 @@ Download and run `gptshell` in your terminal.
 
 ## Download
 
-[MacOS](https://github.com/lyledean1/gptshell/releases/download/v0.1.3-4/gptshell-x86_64-apple-darwin.tar.gz) (Note: you will need to give access to gptshell to run since its an unsigned binary)
+[MacOS](https://github.com/lyledean1/gptshell/releases/download/v0.1.4/gptshell-x86_64-apple-darwin.tar.gz) (Note: you will need to give access to gptshell to run since its an unsigned binary)
 
 ## Install via Cargo 
 ```
