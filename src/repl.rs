@@ -9,6 +9,8 @@ use crate::output::Output;
 use regex::{Captures, Regex};
 use rustyline::error::ReadlineError;
 use rustyline::DefaultEditor;
+use spinoff::Streams;
+use spinoff::{spinners, Color, Spinner};
 use std::env;
 use std::fs;
 use text_colorizer::*;
@@ -136,7 +138,7 @@ fn get_max_tokens(captures: Captures) -> i32 {
 
 fn check_model_input(captures: Captures) -> Models {
     let args: Vec<&str> = captures[1].split(",").collect();
-    let model = args[0].parse::<String>().unwrap();
+    let model = args[0].trim_matches('"').parse::<String>().unwrap();
     get_model(&model)
 }
 
@@ -288,6 +290,12 @@ pub async fn run_repl() {
                     "chat()" => {
                         chat_history.add(generate_message_from_prompt(&history));
 
+                        let spinner = Spinner::new_with_stream(
+                            spinners::Dots,
+                            "",
+                            Color::Yellow,
+                            Streams::Stderr,
+                        );
                         let request = chat::ChatCreateCompletionParams {
                             max_tokens: Some(max_tokens),
                             model: Some(model.name().to_string()),
@@ -297,16 +305,24 @@ pub async fn run_repl() {
                         let output = chat::process_chat_prompt(request).await;
                         match output {
                             Ok(output) => {
+                                spinner.stop();
                                 output.save_messages(&mut chat_history);
-                                output.to_cli()
+                                output.to_cli();
                             }
                             Err(e) => {
+                                spinner.stop();
                                 eprintln!("{}: {:?}", "Error".red(), e)
                             }
                         }
                         history = String::from("");
                     }
                     "complete()" => {
+                        let spinner = Spinner::new_with_stream(
+                            spinners::Dots,
+                            "",
+                            Color::Yellow,
+                            Streams::Stderr,
+                        );
                         let request = completion::CodeCompletionCreateParams {
                             max_tokens: max_tokens,
                             model: model.name().to_string(),
@@ -315,8 +331,12 @@ pub async fn run_repl() {
                         };
                         let output = completion::process_completion_prompt(request).await;
                         match output {
-                            Ok(output) => output.to_cli(),
+                            Ok(output) => {
+                                spinner.stop();
+                                output.to_cli()
+                            }
                             Err(e) => {
+                                spinner.stop();
                                 eprintln!("{}: {:?}", "Error".red(), e)
                             }
                         }
