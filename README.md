@@ -1,7 +1,5 @@
 # GPTshell 
 
-<img src="./assets/gptshell.png" alt="GPTshell" width="200" height="150">
-
 GPTshell is an early prototype of a tool for developers to query and interact with ChatGPT's language capabilities. GPTshell's aim is to simplify the process of using natural language processing and increase productivity while developing.
 
 The tool was used during the development of this shell with ChatGPT and OpenAI! Any feedback is welcome as its still an early prototype. 
