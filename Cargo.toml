@@ -1,7 +1,7 @@
 [package]
 name = "gptshell"
 description = "GPTshell is a tool for developers to query and interact with ChatGPT's language capabilities. GPTshell's aim is to simplify the process of using natural language processing while developing."
-version = "0.1.3"
+version = "0.1.4"
 edition = "2021"
 readme = "./README.md"
 keywords = ["openai", "chatgpt", "shell", "cli", "devex"]

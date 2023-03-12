@@ -8,6 +8,15 @@ The tool was used during the development of this shell with ChatGPT and OpenAI! 
 
 Download and run `gptshell` in your terminal.
 
+## Download
+
+[MacOS](https://github.com/lyledean1/gptshell/releases/download/v0.1.3-4/gptshell-x86_64-apple-darwin.tar.gz) (Note: you will need to give access to gptshell to run since its an unsigned binary)
+
+## Install via Cargo 
+```
+cargo install gptshell
+```
+
 ## Why use GPTshell?
 
 Quickly build up powerful queries by loading files of code, specifying specific lines of code and exporting chat sessions for future use. Essentially reducing the feedback loop time with ChatGPT vs using a web browser where you have to navigate between different files, IDEs and copy & paste. 
@@ -45,9 +54,4 @@ This assumes you have an [OpenAI Developer Account](https://platform.openai.com/
 After generating the token, set the env variable 
 ```
 export OPENAI_API_KEY={API_KEY}
-```
-
-## Install via Cargo 
-```
-cargo install gptshell
 ```
