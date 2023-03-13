@@ -61,8 +61,9 @@ fn print_help() {
     println!("");
     println!("{}", "Completion API Commands".bold());
     println!(
-        "{}{}",
-        "\"complete()\"".yellow()," to send the current terminal query to OpenAI Completion API https://platform.openai.com/docs/guides/code"
+        "{}{}{}",
+        "\"complete()\"".yellow()," to send the current terminal query to OpenAI Completion API https://platform.openai.com/docs/guides/code",
+        " * note: you must set model to a code model for complete to work i.e model(\"code-cushman-001\")"
     );
     println!("");
     println!("{}", "Chat API Commands".bold());
@@ -337,7 +338,8 @@ pub async fn run_repl() {
                             }
                             Err(e) => {
                                 spinner.stop();
-                                eprintln!("{}: {:?}", "Error".red(), e)
+                                eprintln!("Note: you must set model to a code model for complete to work i.e model(\"code-cushman-001\")");
+                                eprintln!("{}: {:?}", "Completion Error".red(), e)
                             }
                         }
                         history = String::from("");
