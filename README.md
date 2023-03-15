@@ -12,12 +12,7 @@ Download and run `gptshell` in your terminal.
 cargo install gptshell
 ```
 
-*Recommended way to install for the time being*
-
-## Download
-
-[MacOS](https://github.com/lyledean1/gptshell/releases/download/v0.1.4/gptshell-x86_64-apple-darwin.tar.gz) (Note: you will need to give access to gptshell to run since its an unsigned binary)
-
+*Recommended way to install while still in development*
 
 ## Why use GPTshell?
 
