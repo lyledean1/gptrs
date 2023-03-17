@@ -111,6 +111,14 @@ fn print_help() {
     println!("");
 }
 
+fn run_pwd_cmd() {
+    match env::current_dir() {
+        Ok(dir) => println!("Current working directory is: {:?}", dir),
+        Err(e) => println!("Error: {:?}", e),
+    }
+    println!("");
+}
+
 fn print_all_models() {
     for model in Models::all() {
         println!(
@@ -346,6 +354,9 @@ pub async fn run_repl() {
                     }
                     "models()" => {
                         print_all_models();
+                    }
+                    "pwd()" => {
+                        run_pwd_cmd();
                     }
                     _ => {
                         // Parse Regex
