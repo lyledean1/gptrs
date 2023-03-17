@@ -6,14 +6,13 @@ The tool was used during the development of this shell with ChatGPT and OpenAI! 
 
 Download and run `gptshell` in your terminal.
 
-## Download
+## Install via Cargo
 
-[MacOS](https://github.com/lyledean1/gptshell/releases/download/v0.1.4/gptshell-x86_64-apple-darwin.tar.gz) (Note: you will need to give access to gptshell to run since its an unsigned binary)
-
-## Install via Cargo 
 ```
 cargo install gptshell
 ```
+
+*Recommended way to install while still in development*
 
 ## Why use GPTshell?
 
