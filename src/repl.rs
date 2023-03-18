@@ -13,6 +13,7 @@ use spinoff::Streams;
 use spinoff::{spinners, Color, Spinner};
 use std::env;
 use std::fs;
+use std::process::Command;
 use text_colorizer::*;
 
 //TODO: make this into an enum and loop through
@@ -57,6 +58,10 @@ fn print_help() {
     println!(
         "{}{}",
         "\"file(\"./path/to/file\",line,line)\"".blue()," to load a file into the query i.e \"file(\"./main.rs\",1,12)\" - the line numbers are optional"
+    );
+    println!(
+        "{}{}",
+        "\"cmd(\"cargo test\")\"".blue()," runs a cmd, currently only in the current working dir, saves output to history so can be included in query"
     );
     println!("");
     println!("{}", "Completion API Commands".bold());
@@ -117,6 +122,19 @@ fn run_pwd_cmd() {
         Err(e) => println!("Error: {:?}", e),
     }
     println!("");
+}
+
+fn run_cmd(captures: Captures) -> String {
+    let args: Vec<&str> = captures[1].split(",").collect();
+    let command = args[0].trim_matches('"').parse::<String>().unwrap();
+    let output = Command::new("sh")
+        .arg("-c")
+        .arg(command)
+        .output()
+        .expect("Failed to execute command");
+    println!("stdout:\n {}", String::from_utf8_lossy(&output.stdout));
+    println!("stderr:\n {}", String::from_utf8_lossy(&output.stderr));
+    format!("stdout:\n{}\n stderr:\n{}\n", String::from_utf8_lossy(&output.stdout).to_string(), String::from_utf8_lossy(&output.stderr).to_string())
 }
 
 fn print_all_models() {
@@ -240,6 +258,7 @@ pub async fn run_repl() {
     let re_set_model_function = Regex::new(r"^model\(([^)]+)\)").unwrap();
     let re_set_temperature_function = Regex::new(r"^temperature\(([^)]+)\)").unwrap();
     let re_export_chat_function = Regex::new(r"^export\(([^)]+)\)").unwrap();
+    let re_cmd_function = Regex::new(r"^cmd\(([^)]+)\)").unwrap();
 
     println!("{} version: {}", "gptshell".bold(), version.italic());
     println!("");
@@ -377,6 +396,9 @@ pub async fn run_repl() {
                         {
                             temperature = check_temperature_input(captures);
                             println!("Setting temperature to {:?}", temperature);
+                        } else if let Some(captures) = re_cmd_function.captures(&input) {
+                            let output = run_cmd(captures);
+                            history.push_str(&output);
                         } else {
                             history.push_str(&input);
                         }
