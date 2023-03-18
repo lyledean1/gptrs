@@ -12,7 +12,7 @@ Quickly build up powerful queries by loading files of code, specifying specific 
 
 Example usage - debugging Rust. Rust is notoriously difficult language to learn, and here is an example of how using GPTshell could improve your workflow.
 
-1) Run cmd `cargo test` in gptshell 
+1) Run cmd `cmd("cargo test")` in gptshell (this will run in the current working dir)
 2) Output is saved to the current query (run `print()`)
 3) Load the file into the current terminal (run `file("./src/main/rs")`)
 4) Ask why the tests are failing (or give a specific hint)

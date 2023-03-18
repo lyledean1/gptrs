@@ -8,7 +8,11 @@ This project adheres to [Semantic Versioning](https://semver.org).
 Note: In this file, do not use the hard wrap in the middle of a sentence for compatibility with GitHub comment style markdown rendering.
 -->
 
-## [0.1.9] - 2023-03-17
+## [0.1.10] - 2023-03-18
+
+- Added the ability to run a terminal command and then automatically copy the output for the query
+
+## [0.1.9] - 2023-03-18
 
 - Added the ability to run a terminal command and then automatically copy the output for the query
 
