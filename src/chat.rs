@@ -60,7 +60,7 @@ pub struct ChatCreateCompletionParams {
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct ChatCreateCompletionResponse {
-    id: Option<String>,
+    id: String,
     object: Option<String>,
     created_at: Option<i64>,
     choices: Option<Vec<Choice>>,
@@ -88,6 +88,27 @@ struct Usage {
     total_tokens: Option<i32>,
 }
 
+#[derive(Debug, Deserialize)]
+pub struct Error {
+    pub message: String,
+    pub r#type: String,
+    pub param: Option<String>,
+    pub code: Option<String>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct ErrorResponse {
+    pub error: Error,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(untagged)]
+pub enum Response {
+    ChatCreateCompletion(ChatCreateCompletionResponse),
+    Error(ErrorResponse),
+}
+
+
 impl Output for ChatCreateCompletionResponse {
     fn get_output(&self) -> String {
         let mut output = String::from("");
@@ -113,6 +134,13 @@ impl Output for ChatCreateCompletionResponse {
     }
 }
 
+impl Output for ErrorResponse {
+    fn get_output(&self) -> String {
+        let output = format!("{:?}", self);
+        String::from(output)
+    }
+}
+
 pub trait MessageHistory {
     fn save_messages(&self, history: &mut GptChat);
 }
@@ -135,8 +163,9 @@ impl MessageHistory for ChatCreateCompletionResponse {
     }
 }
 
-fn parse_chat_response(response: String) -> SerdeResult<ChatCreateCompletionResponse> {
+fn parse_chat_response(response: String) -> SerdeResult<Response> {
     match from_str(&response) {
+        //TODO: make sure decoding is happining here properly
         Ok(c) => return Ok(c),
         Err(e) => {
             return Err(e);
@@ -152,7 +181,15 @@ pub async fn process_chat_prompt(
     match result {
         Ok(response) => match parse_chat_response(response) {
             Ok(completion) => {
-                return Ok(completion);
+                match completion {
+                    Response::ChatCreateCompletion(r)  => {
+                        return Ok(r);
+                    }
+                    Response::Error(e) => {
+                        return Err(ApiError::new(&e.get_output()));
+                    }
+
+                }
             }
             Err(e) => {
                 return Err(ApiError::new(&e.to_string()));
